@@ -1,0 +1,773 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="es">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="x-apple-disable-message-reformatting" />
+  <!--[if !mso]><!-->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!--<![endif]-->
+  <title>MongoDB — Potencia tu Base de Datos</title>
+
+  <!--
+  ============================================================
+  OUTLOOK HACK #1: Namespace VML
+  xmlns:v y xmlns:o son necesarios para VML (botones, fondos)
+  en Outlook Desktop (Word rendering engine).
+  ============================================================
+  -->
+
+  <!--
+  ============================================================
+  PREVIEW DEMO: Este script reemplaza variables {{}} SOLO en
+  el navegador para previsualización. En producción tu ESP
+  (SendGrid / Mailchimp / etc.) hace este reemplazo server-side
+  y este script no afecta el envío real.
+  ============================================================
+  -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var vars = {
+        "{{first_name}}": "Jou",
+        "{{email}}":      "jou@empresa.com",
+        "https://www.mongodb.com/cloud/atlas/register":   "https://www.mongodb.com/cloud/atlas/register"
+      };
+      function replaceVars(node) {
+        if (node.nodeType === 3) {
+          var t = node.nodeValue;
+          Object.keys(vars).forEach(function(k){ t = t.split(k).join(vars[k]); });
+          if (t !== node.nodeValue) node.nodeValue = t;
+        } else {
+          if (node.nodeName === "A" && node.href) {
+            Object.keys(vars).forEach(function(k){ node.href = node.href.split(encodeURIComponent(k)).join(vars[k]); });
+          }
+          node.childNodes.forEach(replaceVars);
+        }
+      }
+      replaceVars(document.body);
+    });
+  </script>
+
+  <!--[if mso]>
+  <xml>
+    <o:OfficeDocumentSettings>
+      <o:AllowPNG/>
+      <o:PixelsPerInch>96</o:PixelsPerInch>
+    </o:OfficeDocumentSettings>
+  </xml>
+  <![endif]-->
+
+  <!--
+  ============================================================
+  OUTLOOK HACK #2: Reset de estilos para Word engine
+  Outlook usa Word para renderizar HTML, por eso necesitamos
+  resetear márgenes y padding que Word agrega por defecto.
+  ============================================================
+  -->
+  <style type="text/css">
+    /* === RESET GLOBAL === */
+    body, table, td, a {
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
+    table, td {
+      mso-table-lspace: 0pt;   /* Hack Outlook: elimina espacio izquierdo en tablas */
+      mso-table-rspace: 0pt;   /* Hack Outlook: elimina espacio derecho en tablas */
+    }
+    img {
+      -ms-interpolation-mode: bicubic;
+      border: 0;
+      outline: none;
+      text-decoration: none;
+    }
+    body {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+    }
+
+    /*
+    ============================================================
+    DARK MODE HACK:
+    Usamos colores que NO se invierten agresivamente.
+    - Evitamos #ffffff puro (se invierte a negro en dark mode)
+    - Usamos #1a1a1a en lugar de #000000
+    - El verde MongoDB (#00ED64) funciona bien en ambos modos
+    ============================================================
+    */
+    @media (prefers-color-scheme: dark) {
+      .email-body { background-color: #1a1a2e !important; }
+      .content-wrapper { background-color: #16213e !important; }
+      .footer-bg { background-color: #0f3460 !important; }
+    }
+
+    /* === RESPONSIVE: solo para clientes que soporten media queries === */
+    @media screen and (max-width: 600px) {
+      .email-container { width: 100% !important; }
+      .hero-text { font-size: 26px !important; }
+      .stack-column { display: block !important; width: 100% !important; }
+      .feature-cell { display: block !important; width: 100% !important; padding: 10px 0 !important; }
+      .mobile-padding { padding-left: 20px !important; padding-right: 20px !important; }
+    }
+  </style>
+</head>
+
+<!--
+============================================================
+OUTLOOK HACK #3: bgcolor en body
+Outlook ignora background-color en CSS externo,
+SIEMPRE usar atributo bgcolor en <body> y <td>.
+============================================================
+-->
+<body class="email-body" style="margin: 0; padding: 0; background-color: #0d1b2a; font-family: Arial, Helvetica, sans-serif;" bgcolor="#0d1b2a">
+
+  <!-- ============================================================
+  HACK #4: Tabla wrapper 100% de ancho para centrar contenido.
+  Outlook no respeta margin: 0 auto en divs, pero sí en tablas
+  con align="center".
+  ============================================================ -->
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #0d1b2a;" bgcolor="#0d1b2a">
+    <tr>
+      <td align="center" valign="top" style="padding: 20px 10px;">
+
+        <!-- ============================================================
+        CONTENEDOR PRINCIPAL: max-width 600px
+        Usamos width="600" como atributo (Outlook ignora max-width CSS)
+        ============================================================ -->
+        <table class="email-container" role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px; width: 100%;">
+
+          <!-- ===== PREHEADER (oculto, preview del email) ===== -->
+          <tr>
+            <td style="display: none; max-height: 0; overflow: hidden; mso-hide: all; font-size: 1px; color: #0d1b2a; line-height: 1px;">
+              Descubre cómo MongoDB transforma tu arquitectura de datos — escala sin límites, rendimiento excepcional. {{first_name}}, esto es para ti.
+              &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+            </td>
+          </tr>
+
+          <!-- ===== HEADER / LOGO ===== -->
+          <tr>
+            <td class="content-wrapper" align="center" valign="top"
+                style="background-color: #001e2b; border-radius: 8px 8px 0 0; padding: 28px 40px 24px 40px;"
+                bgcolor="#001e2b">
+
+              <!-- Logo MongoDB: SVG inline — no depende de servidor externo, funciona en todos los clientes -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
+                <tr>
+                  <td align="center">
+                    <!--[if !mso]><!-->
+                    <svg width="160" height="48" viewBox="0 0 160 48" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+                      <!-- Hoja MongoDB -->
+                      <g transform="translate(0,2)">
+                        <path d="M22 2 C22 2 18 10 18 18 C18 23 20 27 22 30 C24 27 26 23 26 18 C26 10 22 2 22 2Z" fill="#00ED64"/>
+                        <path d="M22 30 C22 30 16 26 16 20 C16 20 18 32 22 36 C22 36 22 32 22 30Z" fill="#00684A"/>
+                        <path d="M22 30 C22 30 28 26 28 20 C28 20 26 32 22 36 C22 36 22 32 22 30Z" fill="#00A35C"/>
+                      </g>
+                      <!-- Texto MongoDB -->
+                      <text x="42" y="30" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#e8f4f0" letter-spacing="0.5">MongoDB</text>
+                    </svg>
+                    <!--<![endif]-->
+                    <!-- Fallback para Outlook (no renderiza SVG inline) -->
+                    <!--[if mso]>
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
+                      <tr>
+                        <td align="center" valign="middle" style="padding-right: 8px;">
+                          <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                            <tr>
+                              <td width="12" style="background-color:#00ED64; font-size:0; line-height:0;">&nbsp;</td>
+                              <td width="4">&nbsp;</td>
+                              <td width="4" style="background-color:#00A35C; font-size:0; line-height:0;">&nbsp;</td>
+                            </tr>
+                            <tr><td height="4" colspan="3">&nbsp;</td></tr>
+                            <tr>
+                              <td width="6" style="background-color:#00684A; font-size:0; line-height:0;">&nbsp;</td>
+                              <td width="4">&nbsp;</td>
+                              <td width="10" style="background-color:#00ED64; font-size:0; line-height:0;">&nbsp;</td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td align="center" valign="middle">
+                          <span style="font-family:Arial,Helvetica,sans-serif; font-size:22px; font-weight:700; color:#e8f4f0; letter-spacing:0.5px;">MongoDB</span>
+                        </td>
+                      </tr>
+                    </table>
+                    <![endif]-->
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Separador decorativo verde -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td style="padding-top: 20px;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
+                      <tr>
+                        <td width="40" height="2" style="background-color: #00ed64; font-size: 0; line-height: 0;" bgcolor="#00ed64">&nbsp;</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== HERO SECTION ===== -->
+          <tr>
+            <td align="center" valign="top"
+                style="background-color: #001e2b; padding: 40px 40px 36px 40px;"
+                bgcolor="#001e2b">
+
+              <!-- Eyebrow label -->
+              <p style="margin: 0 0 12px 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #00ed64; text-transform: uppercase; mso-line-height-rule: exactly; line-height: 16px;">
+                Lanzamiento de Producto
+              </p>
+
+              <!-- Headline principal -->
+              <h1 class="hero-text" style="margin: 0 0 20px 0; font-family: Arial, Helvetica, sans-serif; font-size: 34px; font-weight: 700; color: #e8f4f0; line-height: 1.25; mso-line-height-rule: exactly;">
+                Hola, <span style="color: #00ed64;">{{first_name}}</span> 👋<br />
+                Tu base de datos,<br />
+                <span style="color: #00ed64;">sin límites.</span>
+              </h1>
+
+              <!-- Subtítulo -->
+              <p style="margin: 0 0 32px 0; font-family: Arial, Helvetica, sans-serif; font-size: 16px; color: #a8c5ba; line-height: 1.6; mso-line-height-rule: exactly;">
+                MongoDB 8.0 ya está aquí. Velocidad hasta <strong style="color: #e8f4f0;">3x más rápida</strong>, 
+                Atlas Search rediseñado y agregaciones vectoriales nativas. 
+                El futuro de los datos es flexible, escalable y está disponible ahora.
+              </p>
+
+              <!--
+              ============================================================
+              OUTLOOK HACK #5: BOTON CON VML
+              Outlook Desktop ignora border-radius en <a> y <td>.
+              La unica forma de hacer botones redondeados en Outlook
+              es usando VML (Vector Markup Language).
+              - v:roundrect crea el rectangulo redondeado
+              - arcsize controla el radio de las esquinas
+              ============================================================
+              -->
+              <!--[if mso]>
+              <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml"
+                           xmlns:w="urn:schemas-microsoft-com:office:word"
+                           href="https://www.mongodb.com/cloud/atlas/register?utm_source=email&amp;utm_medium=campaign&amp;utm_campaign=lanzamiento_producto&amp;utm_content=hero_cta"
+                           style="height:52px; v-text-anchor:middle; width:240px;"
+                           arcsize="10%"
+                           stroke="f"
+                           fillcolor="#00ed64">
+                <w:anchorlock/>
+                <center style="color:#001e2b; font-family:Arial,Helvetica,sans-serif; font-size:16px; font-weight:bold;">
+                  Explorar MongoDB 8.0 →
+                </center>
+              </v:roundrect>
+              <![endif]-->
+              <!--[if !mso]><!-->
+              <a href="https://www.mongodb.com/cloud/atlas/register?utm_source=email&utm_medium=campaign&utm_campaign=lanzamiento_producto&utm_content=hero_cta"
+                 target="_blank"
+                 style="display: inline-block; background-color: #00ed64; color: #001e2b; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; text-decoration: none; padding: 14px 36px; border-radius: 6px; mso-padding-alt: 0; line-height: 24px;">
+                <!--[if mso]><i style="letter-spacing: 36px; mso-font-width: -100%; mso-text-raise: 25pt;">&nbsp;</i><![endif]-->
+                Explorar MongoDB 8.0 →
+                <!--[if mso]><i style="letter-spacing: 36px; mso-font-width: -100%;">&nbsp;</i><![endif]-->
+              </a>
+              <!--<![endif]-->
+
+              <!-- Texto de confianza bajo el CTA -->
+              <p style="margin: 16px 0 0 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #6b9080; line-height: 1.4; mso-line-height-rule: exactly;">
+                Sin tarjeta de crédito · Gratis hasta 512 MB · Cancela cuando quieras
+              </p>
+            </td>
+          </tr>
+
+          <!-- ===== DIVISOR ===== -->
+          <tr>
+            <td style="background-color: #001e2b; padding: 0 40px;" bgcolor="#001e2b">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td height="1" style="background-color: #0a3a52; font-size: 0; line-height: 0;" bgcolor="#0a3a52">&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== FEATURES: 3 columnas ===== -->
+          <!--
+          ============================================================
+          OUTLOOK HACK #6: Layout multi-columna
+          Usamos tablas anidadas con align="left" para columnas.
+          NO usar flexbox, grid ni float — Outlook los ignora.
+          El truco "Ghost table" con comentarios condicionales
+          permite que Outlook renderice columnas correctamente.
+          ============================================================
+          -->
+          <tr>
+            <td class="mobile-padding" align="center" valign="top"
+                style="background-color: #001e2b; padding: 40px 40px 36px 40px;"
+                bgcolor="#001e2b">
+
+              <p style="margin: 0 0 6px 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #00ed64; text-transform: uppercase; mso-line-height-rule: exactly;">
+                Novedades
+              </p>
+              <h2 style="margin: 0 0 30px 0; font-family: Arial, Helvetica, sans-serif; font-size: 22px; font-weight: 700; color: #e8f4f0; line-height: 1.3; mso-line-height-rule: exactly;">
+                Todo lo que cambia con MongoDB 8.0
+              </h2>
+
+              <!-- Ghost table para columnas en Outlook -->
+              <!--[if mso]>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td width="156" valign="top">
+              <![endif]-->
+
+              <!-- Columna 1: Rendimiento -->
+              <table class="stack-column feature-cell" role="presentation" cellspacing="0" cellpadding="0" border="0"
+                     align="left" width="156"
+                     style="display: inline-block; vertical-align: top;">
+                <tr>
+                  <td align="center" style="padding: 0 10px;">
+                    <!-- Ícono con fondo -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
+                      <tr>
+                        <td align="center" valign="middle"
+                            width="52" height="52"
+                            style="background-color: #0a3a52; border-radius: 50%; width: 52px; height: 52px; font-size: 24px; line-height: 52px;"
+                            bgcolor="#0a3a52">
+                          ⚡
+                        </td>
+                      </tr>
+                    </table>
+                    <p style="margin: 12px 0 6px 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; color: #e8f4f0; text-align: center; mso-line-height-rule: exactly; line-height: 1.3;">
+                      3x más Rápido
+                    </p>
+                    <p style="margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #6b9080; text-align: center; line-height: 1.5; mso-line-height-rule: exactly;">
+                      Motor de queries completamente reescrito con mejoras en caché de índices.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!--[if mso]>
+                  </td>
+                  <td width="8">&nbsp;</td>
+                  <td width="156" valign="top">
+              <![endif]-->
+
+              <!-- Columna 2: Atlas Vector -->
+              <table class="stack-column feature-cell" role="presentation" cellspacing="0" cellpadding="0" border="0"
+                     align="left" width="156"
+                     style="display: inline-block; vertical-align: top;">
+                <tr>
+                  <td align="center" style="padding: 0 10px;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
+                      <tr>
+                        <td align="center" valign="middle"
+                            width="52" height="52"
+                            style="background-color: #0a3a52; border-radius: 50%; width: 52px; height: 52px; font-size: 24px; line-height: 52px;"
+                            bgcolor="#0a3a52">
+                          🤖
+                        </td>
+                      </tr>
+                    </table>
+                    <p style="margin: 12px 0 6px 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; color: #e8f4f0; text-align: center; mso-line-height-rule: exactly; line-height: 1.3;">
+                      Atlas Vector AI
+                    </p>
+                    <p style="margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #6b9080; text-align: center; line-height: 1.5; mso-line-height-rule: exactly;">
+                      Búsqueda semántica y vectores nativos para aplicaciones de IA generativa.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!--[if mso]>
+                  </td>
+                  <td width="8">&nbsp;</td>
+                  <td width="156" valign="top">
+              <![endif]-->
+
+              <!-- Columna 3: Escalabilidad -->
+              <table class="stack-column feature-cell" role="presentation" cellspacing="0" cellpadding="0" border="0"
+                     align="left" width="156"
+                     style="display: inline-block; vertical-align: top;">
+                <tr>
+                  <td align="center" style="padding: 0 10px;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
+                      <tr>
+                        <td align="center" valign="middle"
+                            width="52" height="52"
+                            style="background-color: #0a3a52; border-radius: 50%; width: 52px; height: 52px; font-size: 24px; line-height: 52px;"
+                            bgcolor="#0a3a52">
+                          🌍
+                        </td>
+                      </tr>
+                    </table>
+                    <p style="margin: 12px 0 6px 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; color: #e8f4f0; text-align: center; mso-line-height-rule: exactly; line-height: 1.3;">
+                      Multi-Cloud Global
+                    </p>
+                    <p style="margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #6b9080; text-align: center; line-height: 1.5; mso-line-height-rule: exactly;">
+                      Replica en AWS, Azure y GCP simultáneamente con latencia mínima.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!--[if mso]>
+                  </td>
+                </tr>
+              </table>
+              <![endif]-->
+
+            </td>
+          </tr>
+
+          <!-- ===== STATS BAND ===== -->
+          <tr>
+            <td align="center" valign="top"
+                style="background-color: #00ed64; padding: 36px 40px;"
+                bgcolor="#00ed64">
+
+              <p style="margin: 0 0 24px 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; color: #001e2b; text-transform: uppercase; text-align: center;">
+                MongoDB en números
+              </p>
+
+              <!-- Stats 3 columnas -->
+              <!--[if mso]>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td width="160" valign="top">
+              <![endif]-->
+
+              <table class="stack-column" role="presentation" cellspacing="0" cellpadding="0" border="0"
+                     align="left" width="160"
+                     style="display: inline-block; vertical-align: top;">
+                <tr>
+                  <td align="center" style="padding: 0 10px;">
+                    <p style="margin: 0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 32px; font-weight: 700; color: #001e2b; line-height: 1; mso-line-height-rule: exactly;">
+                      100M+
+                    </p>
+                    <p style="margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #0a3a52; line-height: 1.4; mso-line-height-rule: exactly;">
+                      Descargas totales
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!--[if mso]>
+                  </td>
+                  <td width="160" valign="top">
+              <![endif]-->
+
+              <table class="stack-column" role="presentation" cellspacing="0" cellpadding="0" border="0"
+                     align="left" width="160"
+                     style="display: inline-block; vertical-align: top;">
+                <tr>
+                  <td align="center" style="padding: 0 10px;">
+                    <p style="margin: 0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 32px; font-weight: 700; color: #001e2b; line-height: 1; mso-line-height-rule: exactly;">
+                      47K+
+                    </p>
+                    <p style="margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #0a3a52; line-height: 1.4; mso-line-height-rule: exactly;">
+                      Empresas en producción
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!--[if mso]>
+                  </td>
+                  <td width="160" valign="top">
+              <![endif]-->
+
+              <table class="stack-column" role="presentation" cellspacing="0" cellpadding="0" border="0"
+                     align="left" width="160"
+                     style="display: inline-block; vertical-align: top;">
+                <tr>
+                  <td align="center" style="padding: 0 10px;">
+                    <p style="margin: 0 0 4px 0; font-family: Arial, Helvetica, sans-serif; font-size: 32px; font-weight: 700; color: #001e2b; line-height: 1; mso-line-height-rule: exactly;">
+                      99.995%
+                    </p>
+                    <p style="margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #0a3a52; line-height: 1.4; mso-line-height-rule: exactly;">
+                      SLA de disponibilidad
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!--[if mso]>
+                  </td>
+                </tr>
+              </table>
+              <![endif]-->
+
+            </td>
+          </tr>
+
+          <!-- ===== CÓDIGO / CASO DE USO ===== -->
+          <tr>
+            <td align="left" valign="top"
+                style="background-color: #001e2b; padding: 40px 40px 36px 40px;"
+                bgcolor="#001e2b">
+
+              <p style="margin: 0 0 6px 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #00ed64; text-transform: uppercase;">
+                Ejemplo práctico
+              </p>
+              <h2 style="margin: 0 0 16px 0; font-family: Arial, Helvetica, sans-serif; font-size: 20px; font-weight: 700; color: #e8f4f0; line-height: 1.3; mso-line-height-rule: exactly;">
+                Búsqueda vectorial en 3 líneas
+              </h2>
+
+              <!-- Bloque de código — usa tabla para el fondo -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td style="background-color: #0a1628; border-radius: 6px; border-left: 3px solid #00ed64; padding: 20px 24px;"
+                      bgcolor="#0a1628">
+                    <p style="margin: 0; font-family: 'Courier New', Courier, monospace; font-size: 13px; color: #a8c5ba; line-height: 1.8; mso-line-height-rule: exactly;">
+                      <span style="color: #00ed64;">db</span>.<span style="color: #e8f4f0;">products</span>.<span style="color: #00c4ff;">aggregate</span>([<br />
+                      &nbsp;&nbsp;{ <span style="color: #ff9f43;">$vectorSearch</span>: {<br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a8c5ba;">queryVector</span>: <span style="color: #00ed64;">embeddings</span>,<br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #a8c5ba;">numCandidates</span>: <span style="color: #ff9f43;">150</span><br />
+                      &nbsp;&nbsp;} }<br />
+                      ]);
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin: 20px 0 0 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #a8c5ba; line-height: 1.6; mso-line-height-rule: exactly;">
+                Con Atlas Vector Search integrado nativamente en tu cluster, no necesitas infraestructura adicional. 
+                Busca por similitud semántica en millones de documentos en milisegundos.
+              </p>
+
+              <!-- CTA secundario -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin-top: 24px;">
+                <tr>
+                  <td>
+                    <a href="https://www.mongodb.com/docs/atlas/atlas-vector-search/?utm_source=email&utm_medium=campaign&utm_campaign=lanzamiento_producto&utm_content=code_section_docs"
+                       target="_blank"
+                       style="display: inline-block; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; color: #00ed64; text-decoration: none; border-bottom: 1px solid #00ed64; padding-bottom: 2px;">
+                      Ver documentación completa →
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== TESTIMONIAL ===== -->
+          <tr>
+            <td align="center" valign="top"
+                style="background-color: #011627; padding: 36px 40px;"
+                bgcolor="#011627">
+
+              <!-- Comillas decorativas -->
+              <p style="margin: 0 0 12px 0; font-family: Georgia, 'Times New Roman', serif; font-size: 48px; color: #00ed64; line-height: 1; mso-line-height-rule: exactly;">
+                "
+              </p>
+              <p style="margin: 0 0 20px 0; font-family: Georgia, 'Times New Roman', serif; font-size: 17px; font-style: italic; color: #e8f4f0; line-height: 1.6; text-align: center; mso-line-height-rule: exactly;">
+                Migramos de PostgreSQL a MongoDB y redujimos nuestra latencia de consultas en un 68%. 
+                El modelo de documentos encaja perfectamente con nuestros datos de usuarios en tiempo real.
+              </p>
+              <p style="margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; color: #6b9080; text-align: center; letter-spacing: 0.5px;">
+                — María González, CTO · FinTech Latam
+              </p>
+            </td>
+          </tr>
+
+          <!-- ===== RECURSOS ADICIONALES: 2 columnas ===== -->
+          <tr>
+            <td class="mobile-padding" align="center" valign="top"
+                style="background-color: #001e2b; padding: 40px 40px 36px 40px;"
+                bgcolor="#001e2b">
+
+              <p style="margin: 0 0 6px 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #00ed64; text-transform: uppercase; text-align: center;">
+                Recursos
+              </p>
+              <h2 style="margin: 0 0 28px 0; font-family: Arial, Helvetica, sans-serif; font-size: 20px; font-weight: 700; color: #e8f4f0; text-align: center; line-height: 1.3; mso-line-height-rule: exactly;">
+                Aprende a tu ritmo
+              </h2>
+
+              <!--[if mso]>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td width="240" valign="top">
+              <![endif]-->
+
+              <!-- Recurso 1 -->
+              <table class="stack-column" role="presentation" cellspacing="0" cellpadding="0" border="0"
+                     align="left" width="240"
+                     style="display: inline-block; vertical-align: top;">
+                <tr>
+                  <td style="padding: 0 8px 20px 0; vertical-align: top;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                      <tr>
+                        <td style="background-color: #0a1628; border-radius: 8px; padding: 20px;" bgcolor="#0a1628">
+                          <p style="margin: 0 0 6px 0; font-family: Arial, Helvetica, sans-serif; font-size: 20px; line-height: 1;">📘</p>
+                          <p style="margin: 0 0 8px 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; color: #e8f4f0; line-height: 1.3; mso-line-height-rule: exactly;">
+                            MongoDB University
+                          </p>
+                          <p style="margin: 0 0 14px 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #6b9080; line-height: 1.5; mso-line-height-rule: exactly;">
+                            Cursos gratuitos certificados para todos los niveles.
+                          </p>
+                          <a href="https://learn.mongodb.com/?utm_source=email&utm_medium=campaign&utm_campaign=lanzamiento_producto&utm_content=resource_university"
+                             target="_blank"
+                             style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: 700; color: #00ed64; text-decoration: none;">
+                            Empezar gratis →
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <!--[if mso]>
+                  </td>
+                  <td width="16">&nbsp;</td>
+                  <td width="240" valign="top">
+              <![endif]-->
+
+              <!-- Recurso 2 -->
+              <table class="stack-column" role="presentation" cellspacing="0" cellpadding="0" border="0"
+                     align="left" width="240"
+                     style="display: inline-block; vertical-align: top;">
+                <tr>
+                  <td style="padding: 0 0 20px 8px; vertical-align: top;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                      <tr>
+                        <td style="background-color: #0a1628; border-radius: 8px; padding: 20px;" bgcolor="#0a1628">
+                          <p style="margin: 0 0 6px 0; font-family: Arial, Helvetica, sans-serif; font-size: 20px; line-height: 1;">🎬</p>
+                          <p style="margin: 0 0 8px 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; color: #e8f4f0; line-height: 1.3; mso-line-height-rule: exactly;">
+                            Webinar en Vivo
+                          </p>
+                          <p style="margin: 0 0 14px 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #6b9080; line-height: 1.5; mso-line-height-rule: exactly;">
+                            Demo de MongoDB 8.0 con Q&amp;A — 20 mayo, 10:00 AM CDMX.
+                          </p>
+                          <a href="https://www.mongodb.com/events/?utm_source=email&utm_medium=campaign&utm_campaign=lanzamiento_producto&utm_content=resource_webinar"
+                             target="_blank"
+                             style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: 700; color: #00ed64; text-decoration: none;">
+                            Registrarme →
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <!--[if mso]>
+                  </td>
+                </tr>
+              </table>
+              <![endif]-->
+
+            </td>
+          </tr>
+
+          <!-- ===== CTA FINAL ===== -->
+          <tr>
+            <td align="center" valign="top"
+                style="background-color: #001e2b; padding: 36px 40px 48px 40px;"
+                bgcolor="#001e2b">
+
+              <p style="margin: 0 0 12px 0; font-family: Arial, Helvetica, sans-serif; font-size: 20px; font-weight: 700; color: #e8f4f0; line-height: 1.3; mso-line-height-rule: exactly;">
+                ¿Listo para empezar, <span style="color: #00ed64;">{{first_name}}</span>?
+              </p>
+              <p style="margin: 0 0 28px 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #6b9080; line-height: 1.5; mso-line-height-rule: exactly;">
+                Tu cluster gratuito en Atlas te espera. Sin límite de tiempo, sin tarjeta de crédito.
+              </p>
+
+              <!--
+              BOTÓN VML SECUNDARIO — Verde oscuro/outline para diferenciar del principal
+              -->
+              <!--[if mso]>
+              <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml"
+                           xmlns:w="urn:schemas-microsoft-com:office:word"
+                           href="https://www.mongodb.com/cloud/atlas/register?utm_source=email&amp;utm_medium=campaign&amp;utm_campaign=lanzamiento_producto&amp;utm_content=bottom_cta"
+                           style="height:52px; v-text-anchor:middle; width:260px;"
+                           arcsize="10%"
+                           stroke="f"
+                           fillcolor="#00ed64">
+                <w:anchorlock/>
+                <center style="color:#001e2b; font-family:Arial,Helvetica,sans-serif; font-size:16px; font-weight:bold;">
+                  Crear mi Atlas Gratuito
+                </center>
+              </v:roundrect>
+              <![endif]-->
+              <!--[if !mso]><!-->
+              <a href="https://www.mongodb.com/cloud/atlas/register?utm_source=email&utm_medium=campaign&utm_campaign=lanzamiento_producto&utm_content=bottom_cta"
+                 target="_blank"
+                 style="display: inline-block; background-color: #00ed64; color: #001e2b; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; text-decoration: none; padding: 14px 36px; border-radius: 6px; line-height: 24px;">
+                Crear mi Atlas Gratuito
+              </a>
+              <!--<![endif]-->
+
+            </td>
+          </tr>
+
+          <!-- ===== FOOTER ===== -->
+          <tr>
+            <td class="footer-bg" align="center" valign="top"
+                style="background-color: #000d19; padding: 32px 40px; border-radius: 0 0 8px 8px;"
+                bgcolor="#000d19">
+
+              <!-- Logo pequeño -->
+              <p style="margin: 0 0 16px 0; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 700; color: #00ed64; letter-spacing: 1px;">
+                MongoDB
+              </p>
+
+              <!-- Links de pie -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
+                <tr>
+                  <td style="padding: 0 8px;">
+                    <a href="https://www.mongodb.com/privacy-policy?utm_source=email&utm_medium=campaign&utm_campaign=lanzamiento_producto&utm_content=footer_privacy"
+                       target="_blank"
+                       style="font-family: Arial, Helvetica, sans-serif; font-size: 11px; color: #4a7a6a; text-decoration: none;">
+                      Privacidad
+                    </a>
+                  </td>
+                  <td style="padding: 0 8px; color: #1a3a2a; font-size: 11px;">|</td>
+                  <td style="padding: 0 8px;">
+                    <a href="https://www.mongodb.com/legal/terms-of-use?utm_source=email&utm_medium=campaign&utm_campaign=lanzamiento_producto&utm_content=footer_terms"
+                       target="_blank"
+                       style="font-family: Arial, Helvetica, sans-serif; font-size: 11px; color: #4a7a6a; text-decoration: none;">
+                      Términos de Uso
+                    </a>
+                  </td>
+                  <td style="padding: 0 8px; color: #1a3a2a; font-size: 11px;">|</td>
+                  <td style="padding: 0 8px;">
+                    <!--
+                    HACK #7: Enlace de baja (unsubscribe).
+                    Requerido por CAN-SPAM y GDPR. Usar variable {{email}}
+                    para personalizar y tener trazabilidad.
+                    -->
+                    <a href="https://www.mongodb.com/unsubscribe?email={{email}}&utm_source=email&utm_medium=campaign&utm_campaign=lanzamiento_producto&utm_content=footer_unsubscribe"
+                       target="_blank"
+                       style="font-family: Arial, Helvetica, sans-serif; font-size: 11px; color: #4a7a6a; text-decoration: none;">
+                      Cancelar suscripción
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Dirección física (requerida CAN-SPAM) -->
+              <p style="margin: 20px 0 0 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; color: #2d5a4a; line-height: 1.6; mso-line-height-rule: exactly; text-align: center;">
+                MongoDB, Inc. · 1633 Broadway, 38th Floor · New York, NY 10019<br />
+                Este email fue enviado a <a href="mailto:{{email}}" style="color: #2d5a4a; text-decoration: none;">{{email}}</a> porque te registraste en MongoDB Atlas.<br />
+                © 2025 MongoDB, Inc. Todos los derechos reservados.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+        <!-- FIN contenedor principal 600px -->
+
+      </td>
+    </tr>
+  </table>
+  <!-- FIN wrapper 100% -->
+
+  <!--
+  ============================================================
+  HACK #8: Pixel de tracking 1x1 (si usas ESP como SendGrid, Mailchimp, etc.)
+  Colocarlo al final del body, antes del cierre </body>
+  Cambiar la URL por la de tu plataforma de email.
+  ============================================================
+  -->
+  <!-- <img src="https://track.tudominio.com/open?campaign=lanzamiento_producto&email={{email}}" width="1" height="1" alt="" style="display:block;border:0;" /> -->
+
+</body>
+</html>
